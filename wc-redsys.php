@@ -261,10 +261,12 @@ class WC_Redsys extends WC_Payment_Gateway {
         foreach ($products as $product) {
             $productos .= $product['quantity'].'x'.$product['data']->post->post_title.'/';
         }
-
+	    
+	    
+	// creamos un nuevo número de pedido para mandar a la pasarela de pago y que no cree duplicidades
         $numpedido =  str_pad($order_id, 12, "0", STR_PAD_LEFT); 
-        $numpedido_id1  = wp_rand( 1, 999 ); // lets to create a random number.
-        $numpedido_id2  = substr_replace( $numpedido, $numpedido_id1, 0, -9 ); // new order number.
+        $numpedido_id1  = wp_rand( 1, 999 ); // número random.
+        $numpedido_id2  = substr_replace( $numpedido, $numpedido_id1, 0, -9 ); // nuevo numero de pedido.
 
         // Obtenemos el valor de la config del idioma 
         if($idioma=="no"){
@@ -409,7 +411,7 @@ class WC_Redsys extends WC_Payment_Gateway {
                 /** Extraer datos de la notificación **/
                 $total     = $miObj->getParameter('Ds_Amount');
                 $pedido    = $miObj->getParameter('Ds_Order');
-                $pedido    = substr($pedido, -5);
+                $pedido    = substr($pedido, -5); // Obtenemos el número de pedido original para que se modifique el estado del pedido
 
 
                 $codigo    = $miObj->getParameter('Ds_MerchantCode');
